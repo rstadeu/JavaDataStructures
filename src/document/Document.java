@@ -64,10 +64,29 @@ public abstract class Document {
 	 */
 	protected int countSyllables(String word)
 	{
-		// TODO: Implement this method so that you can call it from the 
-	    // getNumSyllables method in BasicDocument (module 1) and 
-	    // EfficientDocument (module 2).
-	    return 0;
+
+
+		int sumSillables = 0;
+		boolean isSillable = true;
+		String  vowels = "aeiouy";
+		char[] cArray = word.toCharArray();
+
+		for(int i=0; i < cArray.length; i++){
+
+			if(i==cArray.length-1 && cArray[i] == 'e' && isSillable && sumSillables > 0)
+				sumSillables--;
+			if(isSillable && vowels.indexOf(Character.toLowerCase(cArray[i]))>=0){
+				isSillable = false;
+				sumSillables++;
+			}
+			else if(vowels.indexOf(Character.toLowerCase(cArray[i]))<0)
+				isSillable = true;
+
+
+		}
+
+
+	    return sumSillables;
 	}
 	
 	/** A method for testing
@@ -130,8 +149,12 @@ public abstract class Document {
 	/** return the Flesch readability score of this document */
 	public double getFleschScore()
 	{
-	    // TODO: Implement this method in week 1
-	    return 0.0;
+	    double numWords = (double)getNumWords();
+	    double numSentences = (double)getNumSentences();
+	    double numSillables = (double)getNumSyllables();
+	    double fleschScore = 0.0;
+	    fleschScore = 206.858 - (1.015*(numWords/numSentences)-(84.6*(numSillables/numWords)));
+	    return fleschScore;
 	}
 	
 	
